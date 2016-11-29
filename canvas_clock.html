@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas_clock</title>
+	<style>
+	*{padding: 0;margin: 0;}	
+	body{background: #9f0;}
+	div{width: 600px;height: 600px;margin:100px auto;background: #fff;}
+	</style>
+</head>
+<body>
+	<div>
+		<canvas id="c1" width="600" height="600"></canvas>
+	</div>
+</body>
+</html>
+<script>
+	window.onload=function(){
+		var ca=document.getElementById("c1");
+		var oc=ca.getContext("2d");
+		function drawClock(){
+			var x=300;
+			var y=300;
+			var r=200;
+			
+			var date=new Date();
+			var oH=date.getHours();
+			var oM=date.getMinutes();
+			var oS=date.getSeconds();
+			var oHouers=(-90+oH*30+30*oM/60)*Math.PI/180;
+			var oMinutes=(-90+oM*6+6*oS/60)*Math.PI/180;
+			var oSeconds=(-90+oS*6)*Math.PI/180;
+			
+			oc.strokeStyle="#000";
+			oc.clearRect(0,0,ca.window,ca.height)
+			for(var i=0;i<60;i++){
+				oc.beginPath();
+				oc.moveTo(x,y);
+				oc.arc(x,y,r,6*i*Math.PI/180,6*(i+1)*Math.PI/180);
+				oc.closePath();
+				oc.stroke();
+			}
+			oc.fillStyle="#fff"
+			oc.beginPath();
+			oc.arc(x,y,r*19/20,0,360*Math.PI/180);
+			oc.fill()
+			oc.closePath();
+
+			for(var i=0;i<60;i++){
+				oc.beginPath();
+				oc.moveTo(x,y);
+				oc.arc(x,y,r,30*i*Math.PI/180,30*(i+1)*Math.PI/180);
+				oc.closePath();
+				oc.stroke();
+			}
+
+			oc.fillStyle="#fff"
+			oc.beginPath();
+			oc.arc(x,y,r*18/20,0,360*Math.PI/180);
+			oc.fill()
+			oc.closePath();
+
+			oc.lineWidth=5
+			oc.beginPath();
+
+			oc.moveTo(x,y)
+			oc.arc(x,y,r*8/20,oHouers,oHouers);
+			oc.closePath();
+			oc.stroke();
+
+			oc.lineWidth=3
+			oc.beginPath();
+			oc.moveTo(x,y)
+			oc.arc(x,y,r*12/20,oMinutes,oMinutes);
+			oc.closePath();
+			oc.stroke();
+
+			oc.lineWidth=1
+			
+			oc.beginPath();
+			oc.moveTo(x,y);
+			oc.strokeStyle="red";
+			oc.arc(x,y,r*16/20,oSeconds,oSeconds);
+			oc.closePath();
+			oc.stroke();
+			
+			
+
+		}
+		setInterval(function(){
+			drawClock()
+		},1000)
+		drawClock()
+	}
+</script>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>clock</title>
+	<style>
+	body{padding: 0;margin: 0;background: #f90;}
+	#box{width: 306px;height: 306px;margin: 100px auto;position: relative;}
+	#chassis{width: 300px;height: 300px;border:3px solid #000;border-radius:50%;background: #fff; position: relative;}
+	#box span{width: 2px;height: 6px;position: absolute;background: #666;top:0px;left:149px;-webkit-transform-origin:0 150px;}
+	#box span:nth-of-type(5n+1){height: 10px;}
+	
+	#needle{width: 16px;height: 16px; top:145px;left:145px;position: absolute;}
+	#center{width: 16px;height: 16px; top:0px;left:0px;background: #000;position: absolute;border-radius:50%; }
+	#hours{width: 4px;height: 50px;position: absolute;bottom:8px;left: 4px;background: #000;-webkit-transform-origin:bottom;}
+	#minutes{width: 2px;height: 80px;position: absolute;bottom:8px;left: 5px;background: #666;-webkit-transform-origin:bottom;}
+	#seconds{width: 1px;height: 120px;position: absolute;bottom:8px;left: 5px;background: #f00;-webkit-transform-origin:bottom;}
+
+	</style>
+</head>
+<body>
+	<div id="box">
+		<div id="chassis">
+		</div>
+		<div id="needle">
+			<div id="hours"></div>
+			<div id="minutes"></div>
+			<div id="seconds"></div>
+			<div id="center"></div>
+		</div>
+	</div>
+</body>
+</html>
+<script>
+window.onload=function(){
+	var oHours=document.getElementById("hours");
+	var oMinutes=document.getElementById("minutes");
+	var oSeconds=document.getElementById("seconds");
+
+	var oChassis=document.getElementById("chassis");	
+	drawTick(oChassis);
+	move(oHours,oMinutes,oSeconds);
+
+	setInterval(function(){
+		move(oHours,oMinutes,oSeconds);
+	},1000)
+
+}
+function move(oHours,oMinutes,oSeconds){
+	var oDate=new Date();
+	var s=oDate.getSeconds();
+	var m=oDate.getMinutes()+s/60;
+	var h=oDate.getHours()%12+m/60;
+	console.log(h)
+	console.log(h)
+	oSeconds.style.WebkitTransform="rotate("+(s*6)+"deg)"
+	oMinutes.style.WebkitTransform="rotate("+(m*6)+"deg)"
+	oHours.style.WebkitTransform="rotate("+(h*30)+"deg)"
+
+}
+
+//刻度
+function drawTick(obj){
+	var run=6;
+	var str="";
+	for(var i=0;i<60;i++){
+
+		str+='<span style="-webkit-transform:rotate('+run*i+'deg)"></span>'
+	}
+	obj.innerHTML=str;
+}
+</script>
